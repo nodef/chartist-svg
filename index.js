@@ -58,7 +58,7 @@ function chart(typ, dat, o={}) {
   var th = o.title.height, sth = o.subtitle.height;
   var div = document.createElement('div');
   document.querySelector('svg').appendChild(div);
-  var cht = new (FUNCTION.get(typ))(div, dat.value, o.chart);
+  var cht = new (FUNCTION.get(typ))(div, dat, o.chart);
   return new Promise((fres) => {
     cht.on('created', (data) => {
       var svg = div.querySelector('svg');
