@@ -1,6 +1,6 @@
 {
   "name": "chartist-svg",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generate SVG chart using chartist on node.js.",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/nodef/chartist-svg/issues"
   },
-  "homepage": "https://github.com/nodef/chartist-svg#readme"
+  "homepage": "https://github.com/nodef/chartist-svg#readme",
+  "dependencies": {
+    "chartist": "^0.11.0",
+    "svgdom-css": "^0.1.1"
+  }
 }
