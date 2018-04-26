@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/chartist-svg.png)](https://nodei.co/npm/chartist-svg/)
 
-Generate SVG chart using chartist on node.js
+Generate SVG chart using [chartist] on node.js
 > You can paste the SVG code to a file directly.
 
 ```javascript
@@ -49,3 +49,6 @@ chartist('line', data).then(svg => console.log(svg));
 // <svg xmlns="http://www.w3.org/2000/svg" ... 
 // ... text-anchor="middle">Player Unknown's Battleground</text></svg>
 ```
+
+
+[chartist]: https://www.npmjs.com/package/chartist
