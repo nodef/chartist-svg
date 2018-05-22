@@ -8,7 +8,10 @@ Generate SVG chart using [chartist] on node.js
 ```javascript
 const chartist = require('chartist-svg');
 // chartist(<type>, <data>, [options])
+// -> Promise: "svg code"
+
 // type: 'line', 'bar', or 'pie'
+
 // data: {
 //   title: 'title', subtitle: 'subtitle',
 //   labels: ['A', 'B', 'C'], series: [
@@ -16,6 +19,7 @@ const chartist = require('chartist-svg');
 //     [4, 5, 6]
 //   ]
 // }
+
 // options: {
 //   chart: {
 //     width: 1200, height: 600,
@@ -32,7 +36,7 @@ const chartist = require('chartist-svg');
 //     fill: 'indianred', 'text-anchor': 'middle', (... other svg attrbiutes)
 //   }
 // }
-// -> Promise: "svg code"
+
 
 var data = {
   title: 'Time to play PUBG',
