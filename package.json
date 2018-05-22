@@ -1,6 +1,6 @@
 {
   "name": "chartist-svg",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Generate SVG chart using chartist on node.js.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "chartist",
-    "svg"
+    "svg",
+    "chart"
   ],
   "author": "wolfram77@gmail.com",
   "license": "MIT",
