@@ -1,11 +1,11 @@
-Generate SVG chart using [chartist] on node.js
+Generate SVG chart using [Chartist].
 > You can paste the SVG code to a file directly.
 
 <br>
 
 ```javascript
-const chartist = require('chartist-svg');
-// chartist(<type>, <data>, [options])
+const chartistSvg = require('chartist-svg');
+// chartistSvg(<type>, <data>, [options])
 // -> Promise: "svg code"
 
 type: 'line' // 'line'||'bar'||'pie'
@@ -54,7 +54,7 @@ var data = {
 var options = {
   css: '.ct-chart-line .ct-series .ct-point { stroke: green; }'
 };
-chartist('line', data, options).then(svg => console.log(svg));
+chartistSvg('line', data, options).then(svg => console.log(svg));
 /* (generated svg can be used independently) */
 /* (it is not dependent upon any external css) */
 // <svg xmlns="http://www.w3.org/2000/svg" ...
@@ -67,7 +67,7 @@ chartist('line', data, options).then(svg => console.log(svg));
 
 ## References
 
-- [chartist :: Gion Kunz][chartist]
+- [chartist :: Gion Kunz][Chartist]
 - [svg-chartist :: itbilu](https://www.npmjs.com/package/svg-chartist)
 
-[chartist]: https://www.npmjs.com/package/chartist
+[Chartist]: https://www.npmjs.com/package/chartist

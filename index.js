@@ -57,6 +57,19 @@ function defaults(o) {
 }
 
 
+/**
+ * Generate SVG chart using Chartist.
+ * @param {string} type chart type (line, bar, pie)
+ * @param {object} data chartist data (inc. title, subtitle)
+ * @param {object} [o] options
+ * @param {object} [o.options] chartist options (width, height, chartPadding, ...)
+ * @param {object} [o.resOptions] chartist responsive options
+ * @param {object} [o.onDraw] chartist on 'draw' handler
+ * @param {object} [o.css] custom css
+ * @param {object} [o.title] title attributes (x, y, height, font-size, ...)
+ * @param {object} [o.subtitle] subtitle attributes (x, y, height, font-size, ...)
+ * @returns {Promise<string>} svg code (independent)
+ */
 function chartistSvg(type, data, o={}) {
   // Load chartist CSS.
   if (!CSSDATA) CSSDATA = fs.readFileSync(CSSPATH, 'utf8');

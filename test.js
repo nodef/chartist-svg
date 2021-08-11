@@ -1,4 +1,4 @@
-const chartist = require('./');
+const chartistSvg = require('./');
 
 
 var data = {
@@ -13,4 +13,4 @@ var data = {
 var options = {
   css: '.ct-chart-line .ct-series .ct-point { stroke: green; }'
 };
-chartist('line', data, options).then(svg => console.log(svg));
+chartistSvg('line', data, options).then(svg => console.log(svg));
