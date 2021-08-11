@@ -10,4 +10,7 @@ var data = {
     [3, 4, 5, 6]
   ]
 };
-chartist('line', data).then(svg => console.log(svg));
+var options = {
+  css: '.ct-chart-line .ct-series .ct-point { stroke: green; }'
+};
+chartist('line', data, options).then(svg => console.log(svg));

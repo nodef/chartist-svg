@@ -8,34 +8,38 @@ const chartist = require('chartist-svg');
 // chartist(<type>, <data>, [options])
 // -> Promise: "svg code"
 
-// type: 'line', 'bar', or 'pie'
+type: 'line' // 'line'||'bar'||'pie'
 
-// data: {
-//   title: 'title', subtitle: 'subtitle',
-//   labels: ['A', 'B', 'C'], series: [
-//     [1, 2, 3],
-//     [4, 5, 6]
-//   ]
-// }
+data: {
+  title: 'title', subtitle: 'subtitle',
+  labels: ['A', 'B', 'C'], series: [
+    [1, 2, 3],
+    [4, 5, 6]
+  ]
+}
 
-// options: {
-//   chart: {
-//     width: 1200, height: 600,
-//     chartPadding: {left: 20, right: 100}
-//   },
-//   title: {
-//     x: 0, y: 0, height: 48,
-//     'font-size': '18px', 'font-family': 'Verdana', 'font-weight': 'bold',
-//     fill: 'crimson', 'text-anchor': 'middle', (... other svg attributes)
-//   },
-//   subtitle: {
-//     x: 0, y: 0, height: 24,
-//     'font-size': '12px', 'font-family': 'Verdana', 'font-weight': 'bold',
-//     fill: 'indianred', 'text-anchor': 'middle', (... other svg attrbiutes)
-//   },
-//   css: '.ct-label.ct-vertical { font-size: 14px; }'
-// }
+options: {
+  chart: {
+    width: 1200, height: 600,
+    chartPadding: {left: 20, right: 100}
+  },
+  title: {
+    x: 0, y: 0, height: 48,
+    'font-size': '18px', 'font-family': 'Verdana', 'font-weight': 'bold',
+    fill: 'crimson', 'text-anchor': 'middle', (... other svg attributes)
+  },
+  subtitle: {
+    x: 0, y: 0, height: 24,
+    'font-size': '12px', 'font-family': 'Verdana', 'font-weight': 'bold',
+    fill: 'indianred', 'text-anchor': 'middle', (... other svg attrbiutes)
+  },
+  css: ''
+}
 ```
+
+<br>
+
+Example:
 
 ```javascript
 var data = {
@@ -47,7 +51,10 @@ var data = {
     [3, 4, 5, 6]
   ]
 };
-chartist('line', data).then(svg => console.log(svg));
+var options = {
+  css: '.ct-chart-line .ct-series .ct-point { stroke: green; }'
+};
+chartist('line', data, options).then(svg => console.log(svg));
 /* (generated svg can be used independently) */
 /* (it is not dependent upon any external css) */
 // <svg xmlns="http://www.w3.org/2000/svg" ...

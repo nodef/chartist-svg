@@ -61,8 +61,8 @@ function chartistSvg(typ, dat, o={}) {
 
   // Setup window with svg.
   var o = defaults(o);
-  var window = svgdomCss(o.css+'\n'+CSSCUSTOM+'\n'+CSSDATA);
-  var document = window.document;
+  window = svgdomCss(o.css+'\n'+CSSCUSTOM+'\n'+CSSDATA);
+  document = window.document;
   var w = o.chart.width, h = o.chart.height;
   var th = o.title.height, sth = o.subtitle.height;
   var div = document.createElement('div');
