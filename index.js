@@ -48,14 +48,16 @@ function title(txt, x=0, y=0, o={}) {
 
 
 function defaults(o) {
-  var chart = Object.assign({width: 1200, height: 600, chartPadding: {left: 20, right: 100}}, o.chart), h = Math.min(chart.width, chart.height);
+  var options = Object.assign({width: 1200, height: 600, chartPadding: {left: 20, right: 100}}, o.options, o.chart);
+  var resOptions = o.resOptions||o.resChart||[], onDraw = o.onDraw||null;
+  var css = o.css||'', h = Math.min(options.width, options.height);
   var title = Object.assign({x: 0, y: 0, height: 0.08*h, 'font-size': `${0.03*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'crimson', 'text-anchor': 'middle', role: 'caption'}, o.title);
   var subtitle = Object.assign({x: 0, y: 0, height: 0.04*h, 'font-size': `${0.02*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'indianred', 'text-anchor': 'middle'}, o.subtitle);
-  return Object.assign({chart, title, subtitle, css: ''}, o);
+  return Object.assign({options, resOptions, onDraw, css, title, subtitle}, o);
 }
 
 
-function chartistSvg(typ, dat, o={}) {
+function chartistSvg(type, data, o={}) {
   // Load chartist CSS.
   if (!CSSDATA) CSSDATA = fs.readFileSync(CSSPATH, 'utf8');
 
@@ -63,18 +65,20 @@ function chartistSvg(typ, dat, o={}) {
   var o = defaults(o);
   window = svgdomCss(o.css+'\n'+CSSCUSTOM+'\n'+CSSDATA);
   document = window.document;
-  var w = o.chart.width, h = o.chart.height;
+  var w  = o.options.width,  h = o.options.height;
   var th = o.title.height, sth = o.subtitle.height;
   var div = document.createElement('div');
   document.querySelector('svg').appendChild(div);
 
   // Create chart.
-  var cht = new (FUNCTION.get(typ))(div, dat, o.chart);
+  var fn = FUNCTION.get(type);
+  var chart = new fn(div, data, o.options, o.resOptions);
   return new Promise((fres) => {
-    cht.on('created', (data) => {
+    if (o.onDraw) chart.on('draw', o.onDraw);
+    chart.on('created', () => {
       var svg = div.querySelector('svg');
-      var ttl = title(dat.title, 0.5*w, 0.6*th, o.title);
-      var stl = title(dat.subtitle, 0.5*w, th+0.6*sth, o.subtitle);
+      var ttl = title(data.title, 0.5*w, 0.6*th, o.title);
+      var stl = title(data.subtitle, 0.5*w, th+0.6*sth, o.subtitle);
       for(var e of div.querySelectorAll('svg > g'))
         e.setAttribute('transform', `translate(0, ${th+sth})`);
       for(var e of div.querySelectorAll('svg .ct-label.ct-horizontal'))

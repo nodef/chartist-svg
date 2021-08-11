@@ -68,5 +68,6 @@ chartist('line', data, options).then(svg => console.log(svg));
 ## References
 
 - [chartist :: Gion Kunz][chartist]
+- [svg-chartist :: itbilu](https://www.npmjs.com/package/svg-chartist)
 
 [chartist]: https://www.npmjs.com/package/chartist
