@@ -1,9 +1,7 @@
-# chartist-svg
-
-[![NPM](https://nodei.co/npm/chartist-svg.png)](https://nodei.co/npm/chartist-svg/)
-
 Generate SVG chart using [chartist] on node.js
 > You can paste the SVG code to a file directly.
+
+<br>
 
 ```javascript
 const chartist = require('chartist-svg');
@@ -34,10 +32,12 @@ const chartist = require('chartist-svg');
 //     x: 0, y: 0, height: 24,
 //     'font-size': '12px', 'font-family': 'Verdana', 'font-weight': 'bold',
 //     fill: 'indianred', 'text-anchor': 'middle', (... other svg attrbiutes)
-//   }
+//   },
+//   css: '.ct-label.ct-vertical { font-size: 14px; }'
 // }
+```
 
-
+```javascript
 var data = {
   title: 'Time to play PUBG',
   subtitle: 'Player Unknown\'s Battleground',
@@ -50,9 +50,16 @@ var data = {
 chartist('line', data).then(svg => console.log(svg));
 /* (generated svg can be used independently) */
 /* (it is not dependent upon any external css) */
-// <svg xmlns="http://www.w3.org/2000/svg" ... 
+// <svg xmlns="http://www.w3.org/2000/svg" ...
 // ... text-anchor="middle">Player Unknown's Battleground</text></svg>
 ```
 
+<br>
+<br>
+
+
+## References
+
+- [chartist :: Gion Kunz][chartist]
 
 [chartist]: https://www.npmjs.com/package/chartist

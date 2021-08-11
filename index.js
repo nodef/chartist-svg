@@ -1,7 +1,12 @@
-const css = require('svgdom-css');
-const Chartist = require('chartist');
 const fs = require('fs');
+const svgdomCss = require('svgdom-css');
+const Chartist = require('chartist');
 
+
+
+
+const CSSPATH = require.resolve('chartist/dist/chartist.min.css');
+var   CSSDATA = '';  // delay loading
 const CSSCUSTOM =
 `.ct-label.ct-vertical {
   font-family: Courier;
@@ -16,9 +21,6 @@ const CSSCUSTOM =
   fill: crimson;
   text-anchor: start;
 }`;
-const CSSPATH = require.resolve('chartist/dist/chartist.min.css');
-const STYLE = CSSCUSTOM+fs.readFileSync(CSSPATH, 'utf8');
-css(STYLE);
 
 const FUNCTION = new Map([
   ['bar', Chartist.Bar],
@@ -26,38 +28,47 @@ const FUNCTION = new Map([
   ['pie', Chartist.Pie],
 ]);
 
-function strChunk(txt, len=1, sep='') {
-  for(var i=0, I=txt.length, z=''; i<I; i+=len)
-    z += txt.substr(i, len)+sep;
-  return z;
-};
+
+
 
 function tag(nam, cnt='', att={}) {
   var z = document.createElement(nam);
-  for(var k in att)
+  for (var k in att)
     z.setAttribute(k, att[k]);
   z.textContent = cnt;
   return z;
-};
+}
 
 function title(txt, x=0, y=0, o={}) {
   o.x += x; o.y += y;
   return tag('text', txt, o);
-};
+}
 
-function defaults(o={}) {
+
+
+
+function defaults(o) {
   var chart = Object.assign({width: 1200, height: 600, chartPadding: {left: 20, right: 100}}, o.chart), h = Math.min(chart.width, chart.height);
   var title = Object.assign({x: 0, y: 0, height: 0.08*h, 'font-size': `${0.03*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'crimson', 'text-anchor': 'middle', role: 'caption'}, o.title);
-  var subtitle = Object.assign({x: 0, y: 0, height: 0.04*h, 'font-size': `${0.02*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'indianred', 'text-anchor': 'middle'}, o.subtitle);;
-  return Object.assign({}, o, {chart, title, subtitle});
-};
+  var subtitle = Object.assign({x: 0, y: 0, height: 0.04*h, 'font-size': `${0.02*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'indianred', 'text-anchor': 'middle'}, o.subtitle);
+  return Object.assign({chart, title, subtitle, css: ''}, o);
+}
 
-function chart(typ, dat, o={}) {
+
+function chartistSvg(typ, dat, o={}) {
+  // Load chartist CSS.
+  if (!CSSDATA) CSSDATA = fs.readFileSync(CSSPATH, 'utf8');
+
+  // Setup window with svg.
   var o = defaults(o);
+  var window = svgdomCss(o.css+'\n'+CSSCUSTOM+'\n'+CSSDATA);
+  var document = window.document;
   var w = o.chart.width, h = o.chart.height;
   var th = o.title.height, sth = o.subtitle.height;
   var div = document.createElement('div');
   document.querySelector('svg').appendChild(div);
+
+  // Create chart.
   var cht = new (FUNCTION.get(typ))(div, dat, o.chart);
   return new Promise((fres) => {
     cht.on('created', (data) => {
@@ -78,5 +89,5 @@ function chart(typ, dat, o={}) {
       fres(txt);
     });
   });
-};
-module.exports = chart;
+}
+module.exports = chartistSvg;
