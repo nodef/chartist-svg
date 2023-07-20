@@ -5,7 +5,7 @@ const Chartist = require('chartist');
 
 
 
-const CSSPATH = require.resolve('chartist/dist/chartist.min.css');
+const CSSPATH = require.resolve('chartist/dist/index.css');
 var   CSSDATA = '';  // delay loading
 const CSSCUSTOM =
 `.ct-label.ct-vertical {
@@ -23,9 +23,9 @@ const CSSCUSTOM =
 }`;
 
 const FUNCTION = new Map([
-  ['bar', Chartist.Bar],
-  ['line', Chartist.Line],
-  ['pie', Chartist.Pie],
+  ['bar', Chartist.BarChart],
+  ['line', Chartist.LineChart],
+  ['pie', Chartist.PieChart],
 ]);
 
 
