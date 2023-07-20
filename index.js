@@ -1,12 +1,16 @@
 const fs = require('fs');
 const svgdomCss = require('svgdom-css');
-const Chartist = require('chartist');
+const Chartist  = require('chartist');
 
 
 
 
+// CONSTANTS
+// =========
+
+/** Path to Chartist CSS file. */
 const CSSPATH = require.resolve('chartist/dist/index.css');
-var   CSSDATA = '';  // delay loading
+/** Custom CSS for Chartist. */
 const CSSCUSTOM =
 `.ct-label.ct-vertical {
   font-family: Courier;
@@ -21,41 +25,117 @@ const CSSCUSTOM =
   fill: crimson;
   text-anchor: start;
 }`;
-
+/** Map of Chartist functions. */
 const FUNCTION = new Map([
-  ['bar', Chartist.BarChart],
+  ['bar',  Chartist.BarChart],
   ['line', Chartist.LineChart],
-  ['pie', Chartist.PieChart],
+  ['pie',  Chartist.PieChart],
 ]);
 
 
 
 
-function tag(nam, cnt='', att={}) {
-  var z = document.createElement(nam);
-  for (var k in att)
-    z.setAttribute(k, att[k]);
-  z.textContent = cnt;
-  return z;
+// GLOBAL VARIABLES
+// ================
+
+var CSSDATA = '';  // Delay loading CSS file.
+
+
+
+
+// METHODS
+// =======
+
+// UTILITY
+// -------
+
+/**
+ * Create an element with attributes and content.
+ * @param {string} name tag name
+ * @param {string} content text content
+ * @param {object<string, string>} attrs attributes
+ * @returns {Element} element
+ */
+function createElement(name, content='', attrs={}) {
+  var a = document.createElement(name);
+  for (var k in attrs)
+    a.setAttribute(k, attrs[k]);
+  a.textContent = content;
+  return a;
 }
 
-function title(txt, x=0, y=0, o={}) {
-  o.x += x; o.y += y;
-  return tag('text', txt, o);
+
+/**
+ * Create a title element for Chartist.
+ * @param {string} text title text
+ * @param {number} x x-coordinate
+ * @param {number} y y-coordinate
+ * @param {Object} o attributes
+ * @returns {Element} title element
+ */
+function createTitle(text, x=0, y=0, o={}) {
+  o.x += x;
+  o.y += y;
+  return createElement('text', text, o);
 }
 
 
 
 
+// DEFAULT OPTIONS
+// ---------------
+
+/**
+ * Set default options.
+ * @param {Object} o options
+ * @returns {Object} options
+ */
 function defaults(o) {
-  var options = Object.assign({width: 1200, height: 600, chartPadding: {left: 20, right: 100}}, o.options, o.chart);
-  var resOptions = o.resOptions||o.resChart||[], onDraw = o.onDraw||null;
-  var css = o.css||'', h = Math.min(options.width, options.height);
-  var title = Object.assign({x: 0, y: 0, height: 0.08*h, 'font-size': `${0.03*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'crimson', 'text-anchor': 'middle', role: 'caption'}, o.title);
-  var subtitle = Object.assign({x: 0, y: 0, height: 0.04*h, 'font-size': `${0.02*h}px`, 'font-family': 'Verdana', 'font-weight': 'bold', fill: 'indianred', 'text-anchor': 'middle'}, o.subtitle);
+  // Set options.
+  var options = Object.assign({
+    width:  1200,
+    height: 600,
+    chartPadding: {
+      left:  20,
+      right: 100,
+    },
+  }, o.options, o.chart);
+  // Set responsive options.
+  var resOptions = o.resOptions || o.resChart || [];
+  // Set onDraw handler, css.
+  var onDraw = o.onDraw || null;
+  var css    = o.css    || '';
+  // Set title and subtitle.
+  var h      = Math.min(options.width, options.height);
+  var title  = Object.assign({
+    x: 0,
+    y: 0,
+    height: 0.08*h,
+    'font-size':   `${0.03*h}px`,
+    'font-family': 'Verdana',
+    'font-weight': 'bold',
+    'text-anchor': 'middle',
+    fill: 'crimson',
+    role: 'caption',
+  }, o.title);
+  var subtitle = Object.assign({
+    x: 0,
+    y: 0,
+    height: 0.04*h,
+    'font-size':   `${0.02*h}px`,
+    'font-family': 'Verdana',
+    'font-weight': 'bold',
+    'text-anchor': 'middle',
+    fill: 'indianred',
+  }, o.subtitle);
   return Object.assign({options, resOptions, onDraw, css, title, subtitle}, o);
 }
 
+
+
+
+// MAIN
+// ----
 
 /**
  * Generate SVG chart using Chartist.
@@ -75,35 +155,35 @@ function chartistSvg(type, data, o={}) {
   if (!CSSDATA) CSSDATA = fs.readFileSync(CSSPATH, 'utf8');
 
   // Setup window with svg.
-  var o = defaults(o);
-  window = svgdomCss(o.css+'\n'+CSSCUSTOM+'\n'+CSSDATA);
+  var o    = defaults(o);
+  window   = svgdomCss(o.css + '\n' + CSSCUSTOM + '\n' + CSSDATA);
   document = window.document;
-  var w  = o.options.width,  h = o.options.height;
-  var th = o.title.height, sth = o.subtitle.height;
-  var div = document.createElement('div');
+  var w    = o.options.width,  h = o.options.height;
+  var th   = o.title.height, sth = o.subtitle.height;
+  var div  = document.createElement('div');
   document.querySelector('svg').appendChild(div);
 
   // Create chart.
-  var fn = FUNCTION.get(type);
+  var fn    = FUNCTION.get(type);
   var chart = new fn(div, data, o.options, o.resOptions);
-  return new Promise((fres) => {
+  return new Promise(resolve => {
     if (o.onDraw) chart.on('draw', o.onDraw);
     chart.on('created', () => {
       var svg = div.querySelector('svg');
-      var ttl = title(data.title, 0.5*w, 0.6*th, o.title);
-      var stl = title(data.subtitle, 0.5*w, th+0.6*sth, o.subtitle);
+      var title    = createTitle(data.title,    0.5*w,      0.6*th,  o.title);
+      var subtitle = createTitle(data.subtitle, 0.5*w, th + 0.6*sth, o.subtitle);
       for(var e of div.querySelectorAll('svg > g'))
-        e.setAttribute('transform', `translate(0, ${th+sth})`);
+        e.setAttribute('transform', `translate(0, ${th + sth})`);
       for(var e of div.querySelectorAll('svg .ct-label.ct-horizontal'))
         e.setAttribute('transform', `rotate(20, ${e.getAttribute('x')}, ${e.getAttribute('y')}) translate(-10, 0)`);
-      svg.setAttribute('height', h+th+sth+0.2*h);
+      svg.setAttribute('height', h + th + sth + 0.2*h);
       svg.setAttribute('style', '');
-      svg.appendChild(ttl);
-      svg.appendChild(stl);
+      svg.appendChild(title);
+      svg.appendChild(subtitle);
       window.setComputedStyle(div);
-      var txt = div.innerHTML;
+      var text = div.innerHTML;
       div.parentNode.removeChild(div);
-      fres(txt);
+      resolve(text);
     });
   });
 }
