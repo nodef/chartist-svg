@@ -128,7 +128,7 @@ function defaults(o) {
     'text-anchor': 'middle',
     fill: 'indianred',
   }, o.subtitle);
-  return Object.assign({options, resOptions, onDraw, css, title, subtitle}, o);
+  return Object.assign({}, o, {options, resOptions, onDraw, css, title, subtitle});
 }
 
 
@@ -142,6 +142,7 @@ function defaults(o) {
  * @param {string} type chart type (line, bar, pie)
  * @param {object} data chartist data (inc. title, subtitle)
  * @param {object} [o] options
+ * @param {object} [o.chart] chartist options (width, height, chartPadding, ...)
  * @param {object} [o.options] chartist options (width, height, chartPadding, ...)
  * @param {object} [o.resOptions] chartist responsive options
  * @param {object} [o.onDraw] chartist on 'draw' handler

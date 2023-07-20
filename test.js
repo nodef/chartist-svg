@@ -1,3 +1,4 @@
+const Chartist    = require('chartist');
 const chartistSvg = require('./');
 
 
@@ -7,10 +8,11 @@ var data = {
   labels: ['P', 'U', 'B', 'G'],
   series: [
     [1, 2, 3, 4],
-    [3, 4, 5, 6]
+    [3, 5, 5, 6],
   ]
 };
 var options = {
-  css: '.ct-chart-line .ct-series .ct-point { stroke: green; }'
+  css: '.ct-chart-line .ct-series .ct-point { stroke: green; }',
+  chart: {lineSmooth: Chartist.Interpolation.step()},
 };
 chartistSvg('line', data, options).then(svg => console.log(svg));

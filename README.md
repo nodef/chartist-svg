@@ -1,5 +1,6 @@
 Generate SVG chart using [Chartist].
-> You can paste the SVG code to a file directly.
+> You can paste the SVG code to a file directly. \
+> Use [SVGViewer](https://www.svgviewer.dev) to view the generated SVG.
 
 <br>
 
@@ -42,18 +43,24 @@ options: {
 Example:
 
 ```javascript
+const Chartist    = require('chartist');
+const chartistSvg = require('chartist-svg');
+
 var data = {
   title: 'Time to play PUBG',
   subtitle: 'Player Unknown\'s Battleground',
   labels: ['P', 'U', 'B', 'G'],
   series: [
     [1, 2, 3, 4],
-    [3, 4, 5, 6]
+    [3, 5, 5, 6],
   ]
 };
+
 var options = {
-  css: '.ct-chart-line .ct-series .ct-point { stroke: green; }'
+  css: '.ct-chart-line .ct-series .ct-point { stroke: green; }',
+  chart: {lineSmooth: Chartist.Interpolation.step()},
 };
+
 chartistSvg('line', data, options).then(svg => console.log(svg));
 /* (generated svg can be used independently) */
 /* (it is not dependent upon any external css) */
