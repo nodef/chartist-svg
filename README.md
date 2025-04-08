@@ -78,3 +78,5 @@ chartistSvg('line', data, options).then(svg => console.log(svg));
 - [svg-chartist :: itbilu](https://www.npmjs.com/package/svg-chartist)
 
 [Chartist]: https://www.npmjs.com/package/chartist
+
+![](https://ga-beacon.deno.dev/G-RC63DPBH3P:SH3Eq-NoQ9mwgYeHWxu7cw/github.com/nodef/chartist-svg)
