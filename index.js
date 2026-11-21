@@ -1,6 +1,7 @@
 const fs = require('fs');
 const svgdomCss = require('svgdom-css');
 const Chartist  = require('chartist');
+const {compat}  = require('chartist/compat');
 
 
 
@@ -100,6 +101,8 @@ function defaults(o) {
       right: 100,
     },
   }, o.options, o.chart);
+  // Enable the 1.x event API (`created`, `draw`, …)
+  options.plugins = [...(options.plugins || []), compat];
   // Set responsive options.
   var resOptions = o.resOptions || o.resChart || [];
   // Set onDraw handler, css.

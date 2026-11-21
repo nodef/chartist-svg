@@ -1,0 +1,48 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - '!*'  # Do not execute on tags
+env:
+  NAME:  ${{vars.NAME}}
+  EMAIL: ${{vars.EMAIL}}
+  NPM_TOKEN:    ${{secrets.NPM_TOKEN}}
+  GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+  CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+  FORCE_COLOR: 1
+
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, windows-latest, macOS-latest]
+        node: [26.x]
+    name: Test on ${{matrix.platform}}
+    runs-on: ${{matrix.platform}}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{matrix.node}}
+      - run: npm ci
+      - run: npm test
+
+
+  packages:
+    name: Publish packages
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26.x
+      - uses: nodef/npm-config.action@v1.2.0
+        with:
+          entries: access = public
+      - run: npm ci
+      - run: npm publish
